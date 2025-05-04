@@ -6,6 +6,7 @@ import { enviroment } from './enviroments/enviroments';
 //Módulos
 import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgChartsModule } from 'ng2-charts';
 
 //Angular Firebase
 import { AngularFireModule } from '@angular/fire/compat';
@@ -29,6 +30,7 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { OrdenItemsPipe } from './pipes/orden-items.pipe';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     DetalleComponent,
     FooterComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    OrdenItemsPipe
   ],
   imports: [
     BrowserModule,
@@ -54,7 +57,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: !isDevMode
-    })
+    }),
+    NgChartsModule
   ],
   providers: [
     provideFirebaseApp(() => initializeApp(enviroment.firebase)),

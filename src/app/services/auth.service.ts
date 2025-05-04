@@ -1,14 +1,12 @@
-import { DestroyRef, Injectable } from '@angular/core';
-import { from, map, Observable, Subscription } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { map, Observable, Subscription } from 'rxjs';
 import { Usuario } from '../models/usuario.model';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { CollectionReference, doc, DocumentData, Firestore, getDoc, onSnapshot, setDoc } from '@angular/fire/firestore';
+import { CollectionReference, doc, DocumentData, Firestore, onSnapshot, setDoc } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
 import { AppState } from '../app.reducer';
 import * as authActions from '../auth/auth.actions';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { unsetUser } from '../auth/auth.actions';
 
 
 @Injectable({
@@ -19,12 +17,16 @@ export class AuthService {
   userCollection!: CollectionReference;
   userDoc$!: Observable<any>;
   userDocSubscription?: Subscription;
+  private _user!: Usuario;
+
+  get user(): Usuario {
+    return this._user;
+  }
 
   constructor(
     public auth: AngularFireAuth,
     private firestore: Firestore,
     private store: Store<AppState>,
-    private destroyRef: DestroyRef
    ) {}
 
   initAuthListener(): void {
@@ -35,9 +37,8 @@ export class AuthService {
 
         this.userDocSubscription = this.userDoc$
           .subscribe(snapshot => {
-            const user = snapshot.data() as Usuario;
-            console.log(user);
-            this.store.dispatch(authActions.setUser({ user }));
+            this._user = snapshot.data() as Usuario;
+            this.store.dispatch(authActions.setUser({ user: this._user }));
           });
       } else {
         this.userDocSubscription?.unsubscribe();

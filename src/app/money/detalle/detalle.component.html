@@ -2,24 +2,41 @@
   <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Detalle de ingreso egreso</h4>
+          <h4 class="card-title">Detalle de ingresos y gastos</h4>
 
           <table class="table">
             <thead>
-              <tr>
-                <th>Descripción</th>
-                <th>Monto</th>
-                <th>Tipo</th>
-                <th></th>
+              <tr class="cursor">
+                <th (click)="ordenar('descripcion')">
+                  Descripción
+                  <i *ngIf="getOrdenIcono('descripcion')" [class]="getOrdenIcono('descripcion')"></i>
+                </th>
+                <th (click)="ordenar('importe')">
+                  Importe
+                  <i *ngIf="getOrdenIcono('importe')" [class]="getOrdenIcono('importe')"></i>
+                </th>
+                <th (click)="ordenar('tipo')">
+                  Tipo
+                  <i *ngIf="getOrdenIcono('tipo')" [class]="getOrdenIcono('tipo')"></i>
+                </th>
+                <th>
+                  <i *ngIf="ordenCriterios.length > 0" class="fa fa-times" (click)="ordenCriterios=[]"></i>
+                </th>
               </tr>
             </thead>
 
             <tbody>
-              <tr>
-                <td>Descripción</td>
-                <td>Monto</td>
-                <td>Tipo</td>
-                <td>acciones</td>
+              <tr *ngFor="let item of ingresosGastos | ordenItems : ordenCriterios">
+                <td>{{item.descripcion | titlecase}}</td>
+                <td>{{ item.importe | number:'1.2-2' }} €</td>
+                <td [class.text-success]="item.tipo==='ingreso'" [class.text-danger]="item.tipo==='gasto'">
+                  {{item.tipo | titlecase}}
+                </td>
+                <td>
+                  <button (click)="borrar(item)" type="button" class="btn btn-danger">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </td>
               </tr>
             </tbody>
 
