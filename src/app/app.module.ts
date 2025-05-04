@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { isDevMode, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { enviroment } from './enviroments/enviroments';
@@ -14,6 +14,9 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 
+//NgRx
+import { StoreModule } from '@ngrx/store';
+import { appReducers } from './app.reducer';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -25,7 +28,7 @@ import { DetalleComponent } from './money/detalle/detalle.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
-import { Firestore } from '@angular/fire/firestore';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -46,7 +49,12 @@ import { Firestore } from '@angular/fire/firestore';
     ReactiveFormsModule,
     AngularFireModule.initializeApp(enviroment.firebase),
     AngularFirestoreModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    StoreModule.forRoot(appReducers),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: !isDevMode
+    })
   ],
   providers: [
     provideFirebaseApp(() => initializeApp(enviroment.firebase)),
