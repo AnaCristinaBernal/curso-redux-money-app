@@ -1,12 +1,11 @@
 import { Component, DestroyRef, OnInit } from '@angular/core';
-import { AppState } from '../../app.reducer';
 import { Money } from '../../models/money.model';
 import { Store } from '@ngrx/store';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import * as actions from '../money.actions';
 import { deleteDoc, doc, Firestore } from '@angular/fire/firestore';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
+import { AppStateWithMoney } from '../money.reducer';
 
 @Component({
   selector: 'app-detalle',
@@ -21,7 +20,7 @@ export class DetalleComponent implements OnInit {
   isOrdered = this.ordenCriterios.length > 0;
 
   constructor(
-    private store: Store<AppState>,
+    private store: Store<AppStateWithMoney>,
     private destroyRef: DestroyRef,
     private fireStore: Firestore,
     private authService: AuthService

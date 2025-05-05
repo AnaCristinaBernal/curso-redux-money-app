@@ -1,12 +1,12 @@
-import { isDevMode, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { isDevMode, NgModule } from '@angular/core';
 
-import { enviroment } from './enviroments/enviroments';
 
 //Módulos
 import { AppRoutingModule } from './app-routing.module';
-import { ReactiveFormsModule } from '@angular/forms';
-import { NgChartsModule } from 'ng2-charts';
+
+//Módulos personalizados
+import { AuthModule } from './auth/auth.module';
 
 //Angular Firebase
 import { AngularFireModule } from '@angular/fire/compat';
@@ -17,39 +17,22 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 
 //NgRx
 import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { appReducers } from './app.reducer';
 
+//Enviroment
+import { enviroment } from './enviroments/enviroments';
+
 import { AppComponent } from './app.component';
-import { LoginComponent } from './auth/login/login.component';
-import { RegisterComponent } from './auth/register/register.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { MoneyComponent } from './money/money.component';
-import { EstadisticaComponent } from './money/estadistica/estadistica.component';
-import { DetalleComponent } from './money/detalle/detalle.component';
-import { FooterComponent } from './shared/footer/footer.component';
-import { NavbarComponent } from './shared/navbar/navbar.component';
-import { SidebarComponent } from './shared/sidebar/sidebar.component';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { OrdenItemsPipe } from './pipes/orden-items.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    RegisterComponent,
-    DashboardComponent,
-    MoneyComponent,
-    EstadisticaComponent,
-    DetalleComponent,
-    FooterComponent,
-    NavbarComponent,
-    SidebarComponent,
-    OrdenItemsPipe
   ],
   imports: [
     BrowserModule,
+    AuthModule,
     AppRoutingModule,
-    ReactiveFormsModule,
     AngularFireModule.initializeApp(enviroment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
@@ -58,7 +41,7 @@ import { OrdenItemsPipe } from './pipes/orden-items.pipe';
       maxAge: 25,
       logOnly: !isDevMode
     }),
-    NgChartsModule
+
   ],
   providers: [
     provideFirebaseApp(() => initializeApp(enviroment.firebase)),
